@@ -1,0 +1,43 @@
+# Example workflow for projects requiring database tests
+# Save as .github/workflows/build.yml in your repo
+
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    uses: jas88/.github/.github/workflows/reusable-dotnet-build.yml@main
+    with:
+      dotnet-versions: '["8.0.x", "9.0.x"]'
+      target-frameworks: '["net8.0"]'
+      os-matrix: '["ubuntu-latest"]'
+      run-tests: false  # Tests run in database jobs
+      pack-nuget: false
+
+  database-tests:
+    uses: jas88/.github/.github/workflows/reusable-dotnet-database.yml@main
+    with:
+      dotnet-versions: '["8.0.x", "9.0.x"]'
+      test-sqlserver: true
+      test-mysql: true
+      test-postgresql: true
+      test-oracle: false
+
+  security:
+    uses: jas88/.github/.github/workflows/reusable-security.yml@main
+    with:
+      languages: '["csharp"]'
+
+  publish:
+    needs: [database-tests, security]
+    if: github.event_name == 'release'
+    uses: jas88/.github/.github/workflows/reusable-publish.yml@main
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

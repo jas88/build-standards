@@ -1,0 +1,33 @@
+<Project>
+  <!--
+    Example Directory.Build.props for a repo using build-standards submodule.
+    Copy this to your repo root and customize.
+  -->
+
+  <!-- Import shared standards -->
+  <Import Project="build-standards/Directory.Build.props.shared" />
+
+  <!-- Repo-specific configuration -->
+  <PropertyGroup>
+    <!-- MinVer: Set your project's minimum version -->
+    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+
+    <!-- Package Metadata -->
+    <Product>YourProject</Product>
+    <Description>Your project description here</Description>
+    <PackageProjectUrl>https://github.com/jas88/YourProject</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jas88/YourProject</RepositoryUrl>
+    <PackageTags>your;tags;here</PackageTags>
+
+    <!-- Optional: Override defaults -->
+    <!-- <TreatWarningsAsErrors>false</TreatWarningsAsErrors> -->
+    <!-- <Nullable>disable</Nullable> -->
+  </PropertyGroup>
+
+  <!-- Optional: Additional package references -->
+  <!--
+  <ItemGroup>
+    <PackageReference Include="SomePackage" Version="1.0.0" />
+  </ItemGroup>
+  -->
+</Project>

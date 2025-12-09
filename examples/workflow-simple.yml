@@ -1,0 +1,41 @@
+# Example workflow using reusable workflows from jas88/.github
+# Save as .github/workflows/build.yml in your repo
+
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    uses: jas88/.github/.github/workflows/reusable-dotnet-build.yml@main
+    with:
+      dotnet-versions: '["8.0.x", "9.0.x"]'
+      target-frameworks: '["net8.0"]'
+      os-matrix: '["ubuntu-latest", "windows-latest"]'
+      run-tests: true
+      upload-coverage: true
+      coverage-service: codecov
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  security:
+    uses: jas88/.github/.github/workflows/reusable-security.yml@main
+    with:
+      languages: '["csharp"]'
+      run-codeql: true
+      run-dependency-review: true
+
+  publish:
+    needs: [build, security]
+    if: github.event_name == 'release'
+    uses: jas88/.github/.github/workflows/reusable-publish.yml@main
+    with:
+      push-to-nuget: true
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

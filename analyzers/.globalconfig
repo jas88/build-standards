@@ -1,0 +1,84 @@
+# Global analyzer configuration for jas88 projects
+# This file sets default analyzer severities
+
+is_global = true
+
+# Performance
+dotnet_diagnostic.CA1822.severity = suggestion  # Mark members as static
+dotnet_diagnostic.CA1825.severity = warning     # Avoid zero-length array allocations
+dotnet_diagnostic.CA1829.severity = warning     # Use Length/Count property instead of Count()
+dotnet_diagnostic.CA1834.severity = warning     # Consider using StringBuilder.Append(char)
+dotnet_diagnostic.CA1846.severity = suggestion  # Prefer AsSpan over Substring
+dotnet_diagnostic.CA1854.severity = warning     # Prefer Dictionary.TryGetValue
+
+# Reliability
+dotnet_diagnostic.CA2000.severity = warning     # Dispose objects before losing scope
+dotnet_diagnostic.CA2007.severity = none        # ConfigureAwait - not needed in applications
+dotnet_diagnostic.CA2016.severity = warning     # Forward CancellationToken to methods
+
+# Security
+dotnet_diagnostic.CA2100.severity = warning     # Review SQL queries for security vulnerabilities
+dotnet_diagnostic.CA2119.severity = warning     # Seal methods that satisfy private interfaces
+dotnet_diagnostic.CA3075.severity = warning     # Insecure DTD processing in XML
+dotnet_diagnostic.CA5350.severity = warning     # Do not use weak cryptographic algorithms
+dotnet_diagnostic.CA5351.severity = warning     # Do not use broken cryptographic algorithms
+
+# Maintainability
+dotnet_diagnostic.CA1501.severity = suggestion  # Avoid excessive inheritance
+dotnet_diagnostic.CA1502.severity = suggestion  # Avoid excessive complexity
+dotnet_diagnostic.CA1505.severity = warning     # Avoid unmaintainable code
+dotnet_diagnostic.CA1506.severity = suggestion  # Avoid excessive class coupling
+
+# Style (IDE analyzers)
+dotnet_diagnostic.IDE0001.severity = suggestion  # Simplify name
+dotnet_diagnostic.IDE0002.severity = suggestion  # Simplify member access
+dotnet_diagnostic.IDE0003.severity = suggestion  # Remove this or Me qualification
+dotnet_diagnostic.IDE0004.severity = suggestion  # Remove unnecessary cast
+dotnet_diagnostic.IDE0005.severity = warning     # Remove unnecessary using directives
+dotnet_diagnostic.IDE0010.severity = none        # Add missing cases to switch statement
+dotnet_diagnostic.IDE0011.severity = suggestion  # Add braces
+dotnet_diagnostic.IDE0017.severity = suggestion  # Use object initializers
+dotnet_diagnostic.IDE0018.severity = suggestion  # Inline variable declaration
+dotnet_diagnostic.IDE0019.severity = suggestion  # Use pattern matching to avoid is check followed by cast
+dotnet_diagnostic.IDE0020.severity = suggestion  # Use pattern matching to avoid is check followed by cast
+dotnet_diagnostic.IDE0028.severity = suggestion  # Use collection initializers
+dotnet_diagnostic.IDE0029.severity = suggestion  # Use coalesce expression (non-nullable types)
+dotnet_diagnostic.IDE0030.severity = suggestion  # Use coalesce expression (nullable types)
+dotnet_diagnostic.IDE0031.severity = suggestion  # Use null propagation
+dotnet_diagnostic.IDE0032.severity = suggestion  # Use auto property
+dotnet_diagnostic.IDE0034.severity = suggestion  # Simplify default expression
+dotnet_diagnostic.IDE0035.severity = warning     # Remove unreachable code
+dotnet_diagnostic.IDE0036.severity = suggestion  # Order modifiers
+dotnet_diagnostic.IDE0039.severity = suggestion  # Use local function instead of lambda
+dotnet_diagnostic.IDE0040.severity = warning     # Add accessibility modifiers
+dotnet_diagnostic.IDE0041.severity = suggestion  # Use is null check
+dotnet_diagnostic.IDE0044.severity = suggestion  # Add readonly modifier
+dotnet_diagnostic.IDE0045.severity = suggestion  # Use conditional expression for assignment
+dotnet_diagnostic.IDE0046.severity = suggestion  # Use conditional expression for return
+dotnet_diagnostic.IDE0047.severity = suggestion  # Remove unnecessary parentheses
+dotnet_diagnostic.IDE0048.severity = suggestion  # Add parentheses for clarity
+dotnet_diagnostic.IDE0051.severity = warning     # Remove unused private member
+dotnet_diagnostic.IDE0052.severity = warning     # Remove unread private member
+dotnet_diagnostic.IDE0055.severity = warning     # Fix formatting
+dotnet_diagnostic.IDE0059.severity = warning     # Remove unnecessary value assignment
+dotnet_diagnostic.IDE0060.severity = suggestion  # Remove unused parameter
+dotnet_diagnostic.IDE0061.severity = suggestion  # Use expression body for local functions
+dotnet_diagnostic.IDE0062.severity = suggestion  # Make local function static
+dotnet_diagnostic.IDE0063.severity = suggestion  # Use simple using statement
+dotnet_diagnostic.IDE0065.severity = suggestion  # Using directive placement
+dotnet_diagnostic.IDE0066.severity = suggestion  # Use switch expression
+dotnet_diagnostic.IDE0071.severity = suggestion  # Simplify interpolation
+dotnet_diagnostic.IDE0073.severity = none        # Require file header
+dotnet_diagnostic.IDE0078.severity = suggestion  # Use pattern matching
+dotnet_diagnostic.IDE0083.severity = suggestion  # Use pattern matching (not operator)
+dotnet_diagnostic.IDE0090.severity = suggestion  # Simplify new expression
+dotnet_diagnostic.IDE0130.severity = warning     # Namespace does not match folder structure
+dotnet_diagnostic.IDE0161.severity = warning     # Use file-scoped namespace
+dotnet_diagnostic.IDE0200.severity = suggestion  # Remove unnecessary lambda expression
+dotnet_diagnostic.IDE0270.severity = suggestion  # Null check can be simplified
+dotnet_diagnostic.IDE0300.severity = suggestion  # Use collection expression for array
+dotnet_diagnostic.IDE0301.severity = suggestion  # Use collection expression for empty
+dotnet_diagnostic.IDE0302.severity = suggestion  # Use collection expression for stackalloc
+dotnet_diagnostic.IDE0303.severity = suggestion  # Use collection expression for Create()
+dotnet_diagnostic.IDE0304.severity = suggestion  # Use collection expression for builder
+dotnet_diagnostic.IDE0305.severity = suggestion  # Use collection expression for fluent
