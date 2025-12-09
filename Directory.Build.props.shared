@@ -19,8 +19,8 @@
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
-  <!-- AOT and Trimming Compatibility -->
-  <PropertyGroup>
+  <!-- AOT and Trimming Compatibility (only for frameworks that support it) -->
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
     <IsAotCompatible>true</IsAotCompatible>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
