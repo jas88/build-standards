@@ -1,0 +1,13 @@
+<Project>
+  <!--
+    Shared package versions for repos using Central Package Management.
+    Import this in your Directory.Packages.props:
+    <Import Project="build-standards/Directory.Packages.props.shared" />
+  -->
+  <ItemGroup>
+    <!-- Build infrastructure packages added by Directory.Build.props.shared -->
+    <PackageVersion Include="MinVer" Version="6.0.0" />
+    <PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+  </ItemGroup>
+</Project>
