@@ -35,8 +35,7 @@
   <!-- SourceLink (built into .NET SDK 8+) -->
   <PropertyGroup>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <!-- Embed all sources in DLLs for debugging (no separate symbol package needed) -->
     <EmbedAllSources>true</EmbedAllSources>
   </PropertyGroup>
 
