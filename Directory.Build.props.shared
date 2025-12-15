@@ -25,6 +25,12 @@
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
+  <!-- Explicitly disable AOT for netstandard to suppress NETSDK1210 warnings -->
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
+    <IsAotCompatible>false</IsAotCompatible>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+  </PropertyGroup>
+
   <!-- Deterministic Builds -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
