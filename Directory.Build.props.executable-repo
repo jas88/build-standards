@@ -1,0 +1,46 @@
+<!--
+  Executable Repository Target Framework Pattern
+
+  This pattern is for repositories that contain executable projects.
+  It follows these conventions:
+  - Projects WITHOUT dots in their name are treated as executables → single-target (latest)
+  - Projects WITH dots in their name are treated as libraries → multi-target (all non-EOL)
+  - Tests, Benchmarks, and Source Generators are single-target (latest)
+
+  Example repos that should use this pattern:
+  - SynthEHR (contains SynthEHR.exe)
+  - RDMP (contains rdmp.exe)
+  - PACSify (contains PACSify.exe)
+-->
+<Project>
+
+  <!--
+    Target Framework Configuration for Executable Repositories
+
+    Logic:
+    1. Projects WITHOUT dots AND NOT Tests/Benchmarks = executables → single-target
+    2. Projects WITH dots AND NOT SourceGenerators = libraries → multi-target
+    3. Tests, Benchmarks, Source Generators = single-target
+  -->
+
+  <!-- Executable projects: No dots, not Tests/Benchmarks, not Source Generators -->
+  <PropertyGroup Condition="!$(MSBuildProjectName.Contains('.')) AND !$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Library projects: Have dots, not Source Generators -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('.')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <!-- Tests and Benchmarks: Always single-target -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.Contains('Benchmark'))">
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <!-- Source Generators: Always single-target -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('SourceGenerator'))">
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
