@@ -1,9 +1,23 @@
 <Project>
   <!--
     Shared .NET Build Properties for jas88 projects
-    Import this in your repo's Directory.Build.props:
 
-    <Import Project="build-standards/Directory.Build.props.shared" />
+    Choose the appropriate target framework pattern and import it in your repo's Directory.Build.props:
+
+    For repos with executables (apps, CLIs, services):
+      <Import Project="build-standards/Directory.Build.props.executable-repo" />
+
+    For repos with only libraries:
+      <Import Project="build-standards/Directory.Build.props.library-repo" />
+
+    Then import shared properties:
+      <Import Project="build-standards/Directory.Build.props.shared" />
+
+    The executable-repo pattern follows naming conventions:
+    - Projects WITHOUT dots are executables → single-target (latest .NET)
+    - Projects WITH dots are libraries → multi-target (all non-EOL .NET versions)
+
+    The library-repo pattern treats all projects (except tests/benchmarks) as libraries.
   -->
 
   <!-- Language and Analysis -->

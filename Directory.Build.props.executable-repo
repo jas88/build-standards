@@ -28,8 +28,8 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
-  <!-- Library projects: Have dots, not Source Generators -->
-  <PropertyGroup Condition="$(MSBuildProjectName.Contains('.')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
+  <!-- Library projects: Have dots, not Tests/Benchmarks/Source Generators -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('.')) AND !$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
