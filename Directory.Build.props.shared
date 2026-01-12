@@ -72,8 +72,8 @@
     <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
   </ItemGroup>
 
-  <!-- Coverlet for test projects -->
+  <!-- Code coverage for test projects (Microsoft Testing Platform compatible) -->
   <ItemGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
-    <PackageReference Include="coverlet.collector" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" PrivateAssets="All" />
   </ItemGroup>
 </Project>
