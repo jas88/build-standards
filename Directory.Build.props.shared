@@ -74,6 +74,6 @@
 
   <!-- Code coverage for test projects (Microsoft Testing Platform compatible) -->
   <ItemGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
-    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" PrivateAssets="All" />
   </ItemGroup>
 </Project>
