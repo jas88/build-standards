@@ -77,8 +77,23 @@
     <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
   </ItemGroup>
 
-  <!-- Microsoft Testing Platform (MTP) for test projects -->
-  <!-- Uses IsTestProject property which is set by Microsoft.NET.Test.Sdk or explicitly in .csproj -->
+  <!--
+    Microsoft Testing Platform (MTP) for test projects
+
+    MTP properties must be set in props (not targets) because dotnet test CLI needs
+    them during early project evaluation. We detect test projects by:
+    1. Explicit IsTestProject=true (set in csproj before SDK import, or in nested props)
+    2. Project path containing common test directory patterns
+
+    The path detection covers: tests/, test/, Tests/, Test/, *.Tests/, *.Test/
+  -->
+  <PropertyGroup Condition="'$(IsTestProject)' != 'true'">
+    <!-- Auto-detect test projects by common path patterns -->
+    <_IsTestProjectByPath Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/tests/'))">true</_IsTestProjectByPath>
+    <_IsTestProjectByPath Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/test/'))">true</_IsTestProjectByPath>
+    <IsTestProject Condition="'$(_IsTestProjectByPath)' == 'true'">true</IsTestProject>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Enable NUnit runner (MTP instead of VSTest) -->
     <EnableNUnitRunner>true</EnableNUnitRunner>
