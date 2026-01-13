@@ -77,6 +77,14 @@
     <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
   </ItemGroup>
 
+  <!-- Microsoft Testing Platform (MTP) for test projects -->
+  <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
+    <!-- Enable NUnit runner (MTP instead of VSTest) -->
+    <EnableNUnitRunner>true</EnableNUnitRunner>
+    <!-- Required for MTP - test projects must be executables -->
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
   <!-- Code coverage for test projects (Microsoft Testing Platform compatible) -->
   <ItemGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" PrivateAssets="All" />
