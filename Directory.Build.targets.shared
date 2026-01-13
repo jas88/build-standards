@@ -1,0 +1,18 @@
+<Project>
+  <!--
+    Shared .NET Build Targets for jas88 projects
+    Import this in your repo's Directory.Build.targets:
+
+    <Import Project="build-standards/Directory.Build.targets.shared" />
+
+    These properties must be in a targets file (not props) because they
+    depend on $(TargetFramework) which is not set until after props files.
+  -->
+
+  <!-- AOT and Trimming Compatibility (only for frameworks that support it) -->
+  <!-- Condition ensures property isn't set for netstandard/older frameworks -->
+  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
+    <IsAotCompatible>true</IsAotCompatible>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+</Project>

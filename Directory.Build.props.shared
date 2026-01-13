@@ -33,17 +33,8 @@
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
-  <!-- AOT and Trimming Compatibility (only for frameworks that support it) -->
-  <PropertyGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">
-    <IsAotCompatible>true</IsAotCompatible>
-    <IsTrimmable>true</IsTrimmable>
-  </PropertyGroup>
-
-  <!-- Explicitly disable AOT for netstandard to suppress NETSDK1210 warnings -->
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
-    <IsAotCompatible>false</IsAotCompatible>
-    <EnableAotAnalyzer>false</EnableAotAnalyzer>
-  </PropertyGroup>
+  <!-- NOTE: AOT properties moved to Directory.Build.targets.shared -->
+  <!-- Must be evaluated after TargetFramework is set by the project file -->
 
   <!-- Deterministic Builds -->
   <PropertyGroup>
