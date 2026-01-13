@@ -78,7 +78,8 @@
   </ItemGroup>
 
   <!-- Microsoft Testing Platform (MTP) for test projects -->
-  <PropertyGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
+  <!-- Uses IsTestProject property which is set by Microsoft.NET.Test.Sdk or explicitly in .csproj -->
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- Enable NUnit runner (MTP instead of VSTest) -->
     <EnableNUnitRunner>true</EnableNUnitRunner>
     <!-- Required for MTP - test projects must be executables -->
@@ -86,7 +87,7 @@
   </PropertyGroup>
 
   <!-- Code coverage for test projects (Microsoft Testing Platform compatible) -->
-  <ItemGroup Condition="$(MSBuildProjectDirectory.Contains('Test'))">
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" PrivateAssets="All" />
   </ItemGroup>
 </Project>
