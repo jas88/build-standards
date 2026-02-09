@@ -11,6 +11,7 @@ permissions:
   pull-requests: write
   security-events: read
 
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
