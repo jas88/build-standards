@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["on saturday"],
+  "nuget": {
+    "fileMatch": ["Directory\\.Packages\\.props\\.shared$"]
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["nuget"],
+      "commitMessagePrefix": "build: "
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "commitMessagePrefix": "ci: "
+    }
+  ],
+  "prConcurrentLimit": 5
+}
