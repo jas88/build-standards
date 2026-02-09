@@ -6,8 +6,8 @@
   -->
   <ItemGroup>
     <!-- Build infrastructure packages added by Directory.Build.props.shared -->
-    <PackageVersion Include="MinVer" Version="6.0.0" />
-    <PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.25" />
+    <PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.39" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.4.1" />
+    <PackageVersion Include="MinVer" Version="6.0.0" />
   </ItemGroup>
 </Project>
