@@ -17,8 +17,7 @@ jobs:
 
       - uses: renovatebot/github-action@v42
         with:
-          # A Personal Access Token is recommended over the default GITHUB_TOKEN
-          # so that PRs created by Renovate can trigger other workflows.
-          # Create a fine-grained PAT with Contents + Pull Requests read/write
-          # and store it as the RENOVATE_TOKEN repository secret.
-          token: ${{ secrets.RENOVATE_TOKEN }}
+          # Use the built-in GITHUB_TOKEN for authentication.
+          # This workflow has Contents and Pull Requests write permissions
+          # which are sufficient for Renovate to create and update PRs.
+          token: ${{ secrets.GITHUB_TOKEN }}
