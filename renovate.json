@@ -15,5 +15,8 @@
       "commitMessagePrefix": "ci: "
     }
   ],
-  "prConcurrentLimit": 5
+  "prConcurrentLimit": 5,
+  "vulnerabilityAlerts": {
+    "enabled": false
+  }
 }
