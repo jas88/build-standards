@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: renovatebot/github-action@v42
+      - uses: renovatebot/github-action@v46.0.0
         with:
           # Use the built-in GITHUB_TOKEN for authentication.
           # This workflow has Contents and Pull Requests write permissions
