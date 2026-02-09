@@ -1,0 +1,24 @@
+name: Renovate
+
+on:
+  schedule:
+    - cron: "0 6 * * 6" # Saturday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: renovatebot/github-action@v42
+        with:
+          # A Personal Access Token is recommended over the default GITHUB_TOKEN
+          # so that PRs created by Renovate can trigger other workflows.
+          # Create a fine-grained PAT with Contents + Pull Requests read/write
+          # and store it as the RENOVATE_TOKEN repository secret.
+          token: ${{ secrets.RENOVATE_TOKEN }}
