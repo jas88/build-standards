@@ -3,7 +3,7 @@
   "extends": ["config:recommended"],
   "schedule": ["on saturday"],
   "nuget": {
-    "fileMatch": ["Directory\\.Packages\\.props\\.shared$"]
+    "managerFilePatterns": ["/Directory\\.Packages\\.props\\.shared$/"]
   },
   "packageRules": [
     {
