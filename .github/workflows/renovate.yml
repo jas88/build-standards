@@ -21,3 +21,6 @@ jobs:
           # This workflow has Contents and Pull Requests write permissions
           # which are sufficient for Renovate to create and update PRs.
           token: ${{ secrets.GITHUB_TOKEN }}
+          configurationFile: renovate.json
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
