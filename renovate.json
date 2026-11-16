@@ -1,23 +1,63 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "schedule": ["on saturday"],
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": [
+    "on saturday"
+  ],
   "nuget": {
-    "managerFilePatterns": ["/Directory\\.Packages\\.props\\.shared$/"]
+    "managerFilePatterns": [
+      "/Directory\\.Packages\\.props\\.shared$/"
+    ]
   },
   "packageRules": [
     {
-      "matchManagers": ["nuget"],
+      "matchManagers": [
+        "nuget"
+      ],
       "commitMessagePrefix": "build: "
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "commitMessagePrefix": "ci: "
+    },
+    {
+      "matchManagers": [
+        "pre-commit"
+      ],
+      "commitMessagePrefix": "build: "
+    },
+    {
+      "matchDatasources": [
+        "dotnet-version"
+      ],
+      "commitMessagePrefix": "build: "
     }
   ],
   "prConcurrentLimit": 5,
   "dependencyDashboard": false,
   "vulnerabilityAlerts": {
     "enabled": false
-  }
+  },
+  "pre-commit": {
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the .NET SDK pinned in global.json.template",
+      "managerFilePatterns": [
+        "/(^|/)global\\.json\\.template$/"
+      ],
+      "matchStrings": [
+        "\"version\":\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "dotnet-sdk",
+      "datasourceTemplate": "dotnet-version"
+    }
+  ],
+  "osvVulnerabilityAlerts": true
 }
