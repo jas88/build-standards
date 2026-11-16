@@ -39,6 +39,21 @@ git submodule add https://github.com/jas88/build-standards.git build-standards
 </Project>
 ```
 
+**Repositories that stay on VSTest:** `Directory.Build.props.shared` switches test
+projects (named `*.Tests` / `*.Test`, or under a `tests/` or `test/` directory) to
+Microsoft Testing Platform. To keep VSTest (e.g. with coverlet), opt out *before* the
+shared import:
+
+```xml
+<Project>
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatform>false</UseMicrosoftTestingPlatform>
+  </PropertyGroup>
+  <Import Project="build-standards/Directory.Build.props.shared" />
+  <!-- ... -->
+</Project>
+```
+
 ### Step 3: Replace .editorconfig
 
 ```bash
@@ -76,7 +91,7 @@ jobs:
   build:
     uses: jas88/.github/.github/workflows/reusable-dotnet-build.yml@main
     with:
-      dotnet-versions: '["8.0.x", "9.0.x"]'
+      dotnet-versions: '["10.0.x", "11.0.x"]'
       run-tests: true
       upload-coverage: true
     secrets:
