@@ -76,7 +76,7 @@ jobs:
   build:
     uses: jas88/.github/.github/workflows/reusable-dotnet-build.yml@main
     with:
-      dotnet-versions: '["8.0.x", "9.0.x"]'
+      dotnet-versions: '["10.0.x", "11.0.x"]'
       run-tests: true
       upload-coverage: true
     secrets:

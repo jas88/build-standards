@@ -80,21 +80,30 @@
   <!--
     Microsoft Testing Platform (MTP) for test projects
 
-    MTP properties must be set in props (not targets) because dotnet test CLI needs
-    them during early project evaluation. We detect test projects by:
-    1. Explicit IsTestProject=true (set in csproj before SDK import, or in nested props)
-    2. Project path containing common test directory patterns
+    MTP properties must be set in props (not targets): NUnit3TestAdapter's package
+    targets read EnableNUnitRunner before Directory.Build.targets is imported.
+    This file is evaluated BEFORE the csproj body, so an IsTestProject set in the
+    csproj is not visible here. We detect test projects by:
+    1. Explicit IsTestProject=true set before this import (repo Directory.Build.props
+       or a nested Directory.Build.props)
+    2. Project name ending in .Tests / .Test (e.g. SynthDicom.Tests)
+    3. Project path containing a tests/ or test/ directory (case-insensitive)
 
-    The path detection covers: tests/, test/, Tests/, Test/, *.Tests/, *.Test/
+    Opt out (stay on VSTest) by setting UseMicrosoftTestingPlatform=false before this import.
   -->
   <PropertyGroup Condition="'$(IsTestProject)' != 'true'">
-    <!-- Auto-detect test projects by common path patterns -->
-    <_IsTestProjectByPath Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/tests/'))">true</_IsTestProjectByPath>
-    <_IsTestProjectByPath Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/test/'))">true</_IsTestProjectByPath>
-    <IsTestProject Condition="'$(_IsTestProjectByPath)' == 'true'">true</IsTestProject>
+    <_IsTestProjectByConvention Condition="$(MSBuildProjectName.EndsWith('.Tests')) OR $(MSBuildProjectName.EndsWith('.Test'))">true</_IsTestProjectByConvention>
+    <_IsTestProjectByConvention Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/tests/'))">true</_IsTestProjectByConvention>
+    <_IsTestProjectByConvention Condition="$(MSBuildProjectDirectory.Replace('\','/').ToLower().Contains('/test/'))">true</_IsTestProjectByConvention>
+    <IsTestProject Condition="'$(_IsTestProjectByConvention)' == 'true'">true</IsTestProject>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+  <PropertyGroup>
+    <UseMicrosoftTestingPlatform Condition="'$(UseMicrosoftTestingPlatform)' == ''">true</UseMicrosoftTestingPlatform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true' AND '$(UseMicrosoftTestingPlatform)' == 'true'">
+    <_BuildStandardsMtpApplied>true</_BuildStandardsMtpApplied>
     <!-- Enable NUnit runner (MTP instead of VSTest) -->
     <EnableNUnitRunner>true</EnableNUnitRunner>
     <!-- Required for MTP - test projects must be executables -->
@@ -102,7 +111,7 @@
   </PropertyGroup>
 
   <!-- Code coverage for test projects (Microsoft Testing Platform compatible) -->
-  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+  <ItemGroup Condition="'$(_BuildStandardsMtpApplied)' == 'true'">
     <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" PrivateAssets="All" />
   </ItemGroup>
 </Project>

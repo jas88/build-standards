@@ -5,7 +5,8 @@
   It follows these conventions:
   - Projects WITHOUT dots in their name are treated as executables → single-target (latest)
   - Projects WITH dots in their name are treated as libraries → multi-target (all non-EOL)
-  - Tests, Benchmarks, and Source Generators are single-target (latest)
+  - Tests and Benchmarks are single-target (latest LTS)
+  - Source Generators target netstandard2.0 (required by Roslyn)
 
   Example repos that should use this pattern:
   - SynthEHR (contains SynthEHR.exe)
@@ -20,7 +21,7 @@
     Logic:
     1. Projects WITHOUT dots AND NOT Tests/Benchmarks = executables → single-target
     2. Projects WITH dots AND NOT SourceGenerators = libraries → multi-target
-    3. Tests, Benchmarks, Source Generators = single-target
+    3. Tests, Benchmarks = single-target; Source Generators = netstandard2.0
   -->
 
   <!-- Executable projects: No dots, not Tests/Benchmarks, not Source Generators -->
@@ -30,7 +31,7 @@
 
   <!-- Library projects: Have dots, not Tests/Benchmarks/Source Generators -->
   <PropertyGroup Condition="$(MSBuildProjectName.Contains('.')) AND !$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
-    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Tests and Benchmarks: Always single-target -->
@@ -38,9 +39,13 @@
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
-  <!-- Source Generators: Always single-target -->
-  <PropertyGroup Condition="$(MSBuildProjectName.Contains('SourceGenerator'))">
-    <TargetFramework>net10.0</TargetFramework>
+  <!--
+    Source Generators: must target netstandard2.0 - Roslyn loads generators into the
+    compiler process (including .NET Framework-hosted Visual Studio), so newer TFMs fail to load.
+    Excludes their own Tests/Benchmarks projects, which run on .NET.
+  -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('SourceGenerator')) AND !$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark'))">
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
 </Project>

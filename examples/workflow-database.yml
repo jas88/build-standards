@@ -15,8 +15,8 @@ jobs:
   build:
     uses: jas88/.github/.github/workflows/reusable-dotnet-build.yml@main
     with:
-      dotnet-versions: '["8.0.x", "9.0.x"]'
-      target-frameworks: '["net8.0"]'
+      dotnet-versions: '["10.0.x", "11.0.x"]'
+      target-frameworks: '["net10.0"]'
       os-matrix: '["ubuntu-latest"]'
       run-tests: false  # Tests run in database jobs
       pack-nuget: false
@@ -24,7 +24,7 @@ jobs:
   database-tests:
     uses: jas88/.github/.github/workflows/reusable-dotnet-database.yml@main
     with:
-      dotnet-versions: '["8.0.x", "9.0.x"]'
+      dotnet-versions: '["10.0.x", "11.0.x"]'
       test-sqlserver: true
       test-mysql: true
       test-postgresql: true
