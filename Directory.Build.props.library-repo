@@ -4,7 +4,7 @@
   This pattern is for repositories that contain only library projects (no executables).
   It follows these conventions:
   - All projects (except Tests, Benchmarks, Source Generators) are libraries → multi-target (all non-EOL)
-  - Tests and Benchmarks are single-target (latest LTS)
+  - Tests (*Tests, *.Test) and Benchmarks are single-target (latest LTS)
   - Source Generators target netstandard2.0 (required by Roslyn)
 
   Example repos that should use this pattern:
@@ -15,6 +15,11 @@
 -->
 <Project>
 
+  <!-- Test/benchmark naming convention; keep in sync with test detection in Directory.Build.props.shared -->
+  <PropertyGroup>
+    <_BuildStandardsIsTestOrBenchmark Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.EndsWith('.Test')) OR $(MSBuildProjectName.Contains('Benchmark'))">true</_BuildStandardsIsTestOrBenchmark>
+  </PropertyGroup>
+
   <!--
     Target Framework Configuration for Library Repositories
 
@@ -24,12 +29,12 @@
   -->
 
   <!-- Library projects: Default to multi-target -->
-  <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark')) AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
+  <PropertyGroup Condition="'$(_BuildStandardsIsTestOrBenchmark)' != 'true' AND !$(MSBuildProjectName.Contains('SourceGenerator'))">
     <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
   </PropertyGroup>
 
   <!-- Tests and Benchmarks: Always single-target -->
-  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.Contains('Benchmark'))">
+  <PropertyGroup Condition="'$(_BuildStandardsIsTestOrBenchmark)' == 'true'">
     <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
@@ -38,7 +43,7 @@
     compiler process (including .NET Framework-hosted Visual Studio), so newer TFMs fail to load.
     Excludes their own Tests/Benchmarks projects, which run on .NET.
   -->
-  <PropertyGroup Condition="$(MSBuildProjectName.Contains('SourceGenerator')) AND !$(MSBuildProjectName.EndsWith('Tests')) AND !$(MSBuildProjectName.Contains('Benchmark'))">
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('SourceGenerator')) AND '$(_BuildStandardsIsTestOrBenchmark)' != 'true'">
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
