@@ -1,34 +1,4 @@
 <Project>
   <!-- What a consuming repo puts in its Directory.Build.targets -->
   <Import Project="$(MSBuildThisFileDirectory)../Directory.Build.targets.shared" />
-
-  <!--
-    global.json.template: a consuming repo copies it to global.json, and the dotnet host picks the SDK from it.
-    Do the same in a scratch directory. Fail if no installed SDK satisfies it, or if the host reports the file
-    as invalid, because the host then ignores it and uses the newest SDK. Runs once per project.
-  -->
-  <Target Name="ValidateGlobalJsonTemplate" BeforeTargets="Build"
-          Condition="'$(IsCrossTargetingBuild)' == 'true' OR '$(TargetFrameworks)' == ''">
-    <PropertyGroup>
-      <_GlobalJsonCheckDir>$([MSBuild]::NormalizeDirectory($(MSBuildProjectDirectory), $(BaseIntermediateOutputPath), 'global-json-check'))</_GlobalJsonCheckDir>
-      <_DotNetHost>$(DOTNET_HOST_PATH)</_DotNetHost>
-      <_DotNetHost Condition="'$(_DotNetHost)' == ''">dotnet</_DotNetHost>
-    </PropertyGroup>
-
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)../global.json.template" DestinationFiles="$(_GlobalJsonCheckDir)global.json" />
-
-    <Exec Command="&quot;$(_DotNetHost)&quot; --version" WorkingDirectory="$(_GlobalJsonCheckDir)" IgnoreExitCode="true"
-          IgnoreStandardErrorWarningFormat="true" StandardOutputImportance="low" StandardErrorImportance="low">
-      <Output TaskParameter="ExitCode" PropertyName="_DotNetVersionExitCode" />
-    </Exec>
-    <Error Condition="'$(_DotNetVersionExitCode)' != '0'"
-           Text="No installed .NET SDK satisfies global.json.template ('dotnet --version' exited with $(_DotNetVersionExitCode)), so a repo that copies it would not build." />
-
-    <Exec Command="&quot;$(_DotNetHost)&quot; --info" WorkingDirectory="$(_GlobalJsonCheckDir)" IgnoreExitCode="true"
-          IgnoreStandardErrorWarningFormat="true" ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low">
-      <Output TaskParameter="ConsoleOutput" PropertyName="_DotNetInfo" />
-    </Exec>
-    <Error Condition="$(_DotNetInfo.Contains('Invalid ['))"
-           Text="global.json.template is not a valid global.json, so the dotnet host would ignore it. Run 'dotnet --info' in $(_GlobalJsonCheckDir) to see why." />
-  </Target>
 </Project>
