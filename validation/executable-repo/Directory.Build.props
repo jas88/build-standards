@@ -1,0 +1,10 @@
+<Project>
+  <!-- What a consuming repo with executables puts in its Directory.Build.props -->
+  <Import Project="$(MSBuildThisFileDirectory)../../Directory.Build.props.executable-repo" />
+  <Import Project="$(MSBuildThisFileDirectory)../../Directory.Build.props.shared" />
+
+  <!-- Consuming repos can opt in to the global analyzer settings the same way -->
+  <ItemGroup>
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)../../analyzers/.globalconfig" />
+  </ItemGroup>
+</Project>

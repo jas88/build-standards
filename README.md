@@ -75,3 +75,4 @@ git commit -m "Update build-standards"
 | `global.json.template` | .NET SDK version pinning |
 | `nuget.config` | NuGet package source configuration |
 | `analyzers/.globalconfig` | Global analyzer severity settings |
+| `validation/`, `build-standards.slnx` | Builds the templates to check them; not for copying |

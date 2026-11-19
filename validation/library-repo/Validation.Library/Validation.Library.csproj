@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- No source files: building it checks that the library-repo pattern multi-targets with the shared props -->
+
+</Project>
