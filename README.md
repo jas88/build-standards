@@ -45,9 +45,12 @@ cp build-standards/.editorconfig .editorconfig
 
 ```bash
 cp build-standards/.pre-commit-config.yaml .pre-commit-config.yaml
+cp build-standards/.markdownlint.yaml .markdownlint.yaml
 pip install pre-commit
 pre-commit install
 ```
+
+`.markdownlint.yaml` turns off three markdownlint rules: line length, inline HTML, and a top-level heading as the first line. It also lets a heading repeat under a different parent heading, as the version sections of a Keep a Changelog CHANGELOG do. The markdownlint hook and editors read it from the repo root. Turn rules off there, not with `--disable` in the hook's `args`: `--disable` takes every argument after it, including the file names pre-commit appends, so markdownlint checks nothing.
 
 `pre-commit install` sets up the pre-commit, pre-push and commit-msg hooks, because the config's `default_install_hook_types` lists all three. If a clone installed the hooks before that setting was added, run `pre-commit install` again to add the pre-push and commit-msg hooks.
 
@@ -68,10 +71,11 @@ git commit -m "Update build-standards"
 ## Files
 
 | File | Purpose |
-|------|---------|
+| ------ | --------- |
 | `Directory.Build.props.shared` | Common MSBuild properties |
 | `.editorconfig` | Code style rules |
 | `.pre-commit-config.yaml` | Pre-commit hook configuration |
+| `.markdownlint.yaml` | markdownlint rule settings, for the hook and editors |
 | `global.json.template` | .NET SDK version pinning |
 | `nuget.config` | NuGet package source configuration |
 | `analyzers/.globalconfig` | Global analyzer severity settings |

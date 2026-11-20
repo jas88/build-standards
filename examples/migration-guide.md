@@ -12,6 +12,7 @@ git submodule add https://github.com/jas88/build-standards.git build-standards
 ### Step 2: Update Directory.Build.props
 
 **Before (repo-specific):**
+
 ```xml
 <Project>
   <PropertyGroup>
@@ -24,6 +25,7 @@ git submodule add https://github.com/jas88/build-standards.git build-standards
 ```
 
 **After (using shared standards):**
+
 ```xml
 <Project>
   <Import Project="build-standards/Directory.Build.props.shared" />
@@ -68,6 +70,7 @@ ln -s build-standards/.editorconfig .editorconfig
 Replace your existing workflow with a call to the reusable workflow:
 
 **Before (.github/workflows/build.yml - 150+ lines):**
+
 ```yaml
 name: Build
 on:
@@ -77,6 +80,7 @@ on:
 ```
 
 **After (.github/workflows/build.yml - 30 lines):**
+
 ```yaml
 name: Build
 on:
@@ -112,15 +116,19 @@ jobs:
 
 ```bash
 cp build-standards/.pre-commit-config.yaml .pre-commit-config.yaml
+cp build-standards/.markdownlint.yaml .markdownlint.yaml
 pip install pre-commit
 pre-commit install
 ```
+
+`.markdownlint.yaml` turns off three markdownlint rules: line length, inline HTML, and a top-level heading as the first line. It also lets a heading repeat under a different parent heading, as the version sections of a Keep a Changelog CHANGELOG do. The markdownlint hook and editors read it from the repo root. Turn rules off there, not with `--disable` in the hook's `args`: `--disable` takes every argument after it, including the file names pre-commit appends, so markdownlint checks nothing.
 
 `pre-commit install` sets up the pre-commit, pre-push and commit-msg hooks, because the config's `default_install_hook_types` lists all three. If a clone installed the hooks before that setting was added, run `pre-commit install` again to add the pre-push and commit-msg hooks.
 
 ### Step 6: Update .gitmodules
 
 Your repo will have a new `.gitmodules` file:
+
 ```ini
 [submodule "build-standards"]
     path = build-standards
