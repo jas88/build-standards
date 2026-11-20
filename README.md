@@ -68,7 +68,7 @@ git commit -m "Update build-standards"
 ## Files
 
 | File | Purpose |
-|------|---------|
+| ------ | --------- |
 | `Directory.Build.props.shared` | Common MSBuild properties |
 | `.editorconfig` | Code style rules |
 | `.pre-commit-config.yaml` | Pre-commit hook configuration |

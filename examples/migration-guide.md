@@ -12,6 +12,7 @@ git submodule add https://github.com/jas88/build-standards.git build-standards
 ### Step 2: Update Directory.Build.props
 
 **Before (repo-specific):**
+
 ```xml
 <Project>
   <PropertyGroup>
@@ -24,6 +25,7 @@ git submodule add https://github.com/jas88/build-standards.git build-standards
 ```
 
 **After (using shared standards):**
+
 ```xml
 <Project>
   <Import Project="build-standards/Directory.Build.props.shared" />
@@ -68,6 +70,7 @@ ln -s build-standards/.editorconfig .editorconfig
 Replace your existing workflow with a call to the reusable workflow:
 
 **Before (.github/workflows/build.yml - 150+ lines):**
+
 ```yaml
 name: Build
 on:
@@ -77,6 +80,7 @@ on:
 ```
 
 **After (.github/workflows/build.yml - 30 lines):**
+
 ```yaml
 name: Build
 on:
@@ -121,6 +125,7 @@ pre-commit install
 ### Step 6: Update .gitmodules
 
 Your repo will have a new `.gitmodules` file:
+
 ```ini
 [submodule "build-standards"]
     path = build-standards
