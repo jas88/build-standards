@@ -1,0 +1,8 @@
+<Project>
+  <!-- What a consuming repo puts in its Directory.Packages.props -->
+  <Import Project="$(MSBuildThisFileDirectory)../Directory.Packages.props.shared" />
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+</Project>

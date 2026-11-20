@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="validation/executable-repo/ValidationApp/ValidationApp.csproj" />
+  <Project Path="validation/library-repo/Validation.Library/Validation.Library.csproj" />
+</Solution>

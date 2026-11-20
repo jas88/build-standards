@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- No dots in the name: the executable-repo pattern makes it a single-target executable -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- The check below runs this program; let it use a newer runtime if that is all that is installed -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <!--
+    global.json.template: a consuming repo copies it to global.json, and the dotnet host picks the SDK from it.
+    After the build, fail unless the template:
+    1. is strict JSON with an sdk.version string. This program checks that, because the host accepts some
+       malformed JSON and ignores other malformed JSON instead of failing.
+    2. is accepted by the host when copied to a scratch global.json: the host's info output must not report
+       it as invalid or not found.
+    3. names an installed SDK, allowing for its rollForward policy.
+  -->
+  <Target Name="ValidateGlobalJsonTemplate" AfterTargets="Build">
+    <PropertyGroup>
+      <_GlobalJsonTemplate>$([MSBuild]::NormalizePath($(MSBuildThisFileDirectory), '..', '..', '..', 'global.json.template'))</_GlobalJsonTemplate>
+      <_GlobalJsonCheckDir>$([MSBuild]::NormalizeDirectory($(MSBuildProjectDirectory), $(BaseIntermediateOutputPath), 'global-json-check'))</_GlobalJsonCheckDir>
+      <_DotNetHost>$(DOTNET_HOST_PATH)</_DotNetHost>
+      <_DotNetHost Condition="'$(_DotNetHost)' == ''">dotnet</_DotNetHost>
+    </PropertyGroup>
+
+    <Exec Command="&quot;$(_DotNetHost)&quot; &quot;$(TargetPath)&quot; &quot;$(_GlobalJsonTemplate)&quot;" IgnoreExitCode="true"
+          IgnoreStandardErrorWarningFormat="true" ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ExitCode" PropertyName="_JsonCheckExitCode" />
+      <Output TaskParameter="ConsoleOutput" PropertyName="_JsonCheckOutput" />
+    </Exec>
+    <Error Condition="'$(_JsonCheckExitCode)' != '0'" Text="$(_JsonCheckOutput)" />
+
+    <Copy SourceFiles="$(_GlobalJsonTemplate)" DestinationFiles="$(_GlobalJsonCheckDir)global.json" />
+
+    <Exec Command="&quot;$(_DotNetHost)&quot; --info" WorkingDirectory="$(_GlobalJsonCheckDir)" IgnoreExitCode="true"
+          IgnoreStandardErrorWarningFormat="true" ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_DotNetInfo" />
+    </Exec>
+    <Error Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(_DotNetInfo), 'global\.json file:;\s*(Not found|Invalid)'))"
+           Text="The dotnet host does not accept global.json.template as a global.json, so it would ignore it. Run 'dotnet --info' in $(_GlobalJsonCheckDir) to see why." />
+
+    <Exec Command="&quot;$(_DotNetHost)&quot; --version" WorkingDirectory="$(_GlobalJsonCheckDir)" IgnoreExitCode="true"
+          IgnoreStandardErrorWarningFormat="true" StandardOutputImportance="low" StandardErrorImportance="low">
+      <Output TaskParameter="ExitCode" PropertyName="_DotNetVersionExitCode" />
+    </Exec>
+    <Error Condition="'$(_DotNetVersionExitCode)' != '0'"
+           Text="No installed .NET SDK satisfies global.json.template ('dotnet --version' exited with $(_DotNetVersionExitCode)), so a repo that copies it would not build." />
+  </Target>
+
+</Project>

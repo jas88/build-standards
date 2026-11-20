@@ -1,0 +1,10 @@
+<Project>
+  <!-- What a consuming library-only repo puts in its Directory.Build.props -->
+  <Import Project="$(MSBuildThisFileDirectory)../../Directory.Build.props.library-repo" />
+  <Import Project="$(MSBuildThisFileDirectory)../../Directory.Build.props.shared" />
+
+  <!-- Consuming repos can opt in to the global analyzer settings the same way -->
+  <ItemGroup>
+    <GlobalAnalyzerConfigFiles Include="$(MSBuildThisFileDirectory)../../analyzers/.globalconfig" />
+  </ItemGroup>
+</Project>

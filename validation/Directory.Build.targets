@@ -1,0 +1,4 @@
+<Project>
+  <!-- What a consuming repo puts in its Directory.Build.targets -->
+  <Import Project="$(MSBuildThisFileDirectory)../Directory.Build.targets.shared" />
+</Project>

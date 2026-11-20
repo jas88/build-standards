@@ -49,6 +49,8 @@ pip install pre-commit
 pre-commit install
 ```
 
+`pre-commit install` sets up the pre-commit, pre-push and commit-msg hooks, because the config's `default_install_hook_types` lists all three. If a clone installed the hooks before that setting was added, run `pre-commit install` again to add the pre-push and commit-msg hooks.
+
 ### global.json
 
 ```bash
@@ -73,3 +75,4 @@ git commit -m "Update build-standards"
 | `global.json.template` | .NET SDK version pinning |
 | `nuget.config` | NuGet package source configuration |
 | `analyzers/.globalconfig` | Global analyzer severity settings |
+| `validation/`, `build-standards.slnx` | Builds the templates to check them; not for copying |
