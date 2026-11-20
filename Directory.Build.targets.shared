@@ -17,12 +17,13 @@
   </PropertyGroup>
 
   <!--
-    IsTestProject set in the csproj body is only visible here, too late for the MTP
-    settings in Directory.Build.props.shared. Flag it rather than silently using VSTest.
+    IsTestProject set in the csproj body, or by a package such as Microsoft.NET.Test.Sdk, is
+    visible only here, too late for the MTP settings in Directory.Build.props.shared. Flag it
+    rather than silently leaving those settings out.
     Runs once per project: in the outer build when multi-targeted, not per inner TFM.
   -->
   <Target Name="_BuildStandardsCheckTestDetection" BeforeTargets="Build"
           Condition="'$(IsTestProject)' == 'true' AND '$(UseMicrosoftTestingPlatform)' == 'true' AND '$(_BuildStandardsMtpApplied)' != 'true' AND ('$(TargetFrameworks)' == '' OR '$(IsCrossTargetingBuild)' == 'true')">
-    <Warning Code="BS0001" Text="$(MSBuildProjectName) sets IsTestProject in its project file, after build-standards applied its test settings, so it is not using Microsoft Testing Platform. Name it *.Tests, move it under tests/, set IsTestProject before importing Directory.Build.props.shared, or set UseMicrosoftTestingPlatform=false to stay on VSTest." />
+    <Warning Code="BS0001" Text="$(MSBuildProjectName) is a test project, but IsTestProject was set after Directory.Build.props.shared was imported, so build-standards did not apply its test settings: EnableNUnitRunner=true, OutputType=Exe and the Microsoft.Testing.Extensions.CodeCoverage package reference. Set IsTestProject=true before that import (in the repo's Directory.Build.props or a nested one), name the project *.Tests or *.Test, or put it in a folder under tests/ or test/; to stay on VSTest, set UseMicrosoftTestingPlatform=false instead." />
   </Target>
 </Project>
