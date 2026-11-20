@@ -125,6 +125,9 @@ dotnet_diagnostic.CA1812.severity = none  # Avoid uninstantiated internal classe
 dotnet_diagnostic.CA2007.severity = none  # ConfigureAwait (not needed in apps)
 
 # Test code: async test methods keep their descriptive names, so the Async suffix rule doesn't apply.
-# Matches tests/, *Tests/ and *Test/ folders (e.g. tests/X.Tests, SynthEHRTests, PACSify.Test) at any depth.
-[{tests,*Tests,*Test,**/tests,**/*Tests,**/*Test}/**.cs]
+# Matches tests/, test/, *Tests/, *Test/, Tests.*/ and Test.*/ folders at any depth. That covers the
+# conventions Directory.Build.props.shared detects (*.Tests and *.Test projects, tests/ and test/
+# folders) and names such as SynthEHRTests, Tests.FileStats and Test.LibArchive.Net. Each name is
+# listed bare and after **/, because in Roslyn **/ must match at least one folder.
+[{tests,test,*Tests,*Test,Tests.*,Test.*,**/tests,**/test,**/*Tests,**/*Test,**/Tests.*,**/Test.*}/**.cs]
 dotnet_naming_rule.async_methods_should_end_with_async.severity = none
