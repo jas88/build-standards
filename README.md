@@ -60,6 +60,8 @@ pre-commit install
 cp build-standards/global.json.template global.json
 ```
 
+The template pins the .NET SDK and sets `test.runner` to `Microsoft.Testing.Platform`. `Directory.Build.props.shared` switches test projects to Microsoft Testing Platform, and on the .NET 10 SDK and later `dotnet test` only runs those projects when `global.json` opts in to that runner; without it, `dotnet test` fails with "Testing with VSTest target is no longer supported by Microsoft.Testing.Platform". A repo that stays on VSTest (`UseMicrosoftTestingPlatform=false`) must remove the `test` section from its `global.json`.
+
 ## Updating
 
 ```bash
