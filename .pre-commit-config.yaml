@@ -27,7 +27,7 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.50.0
+    rev: v0.50.1
     hooks:
       - id: markdownlint
         # Rules are turned off in .markdownlint.yaml (copy it with this file), not with --disable here:
